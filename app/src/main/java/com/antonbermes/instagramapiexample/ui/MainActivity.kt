@@ -1,7 +1,8 @@
-package com.antonbermes.instagramapiexample
+package com.antonbermes.instagramapiexample.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.antonbermes.instagramapiexample.R
 
 class MainActivity : AppCompatActivity() {
 
