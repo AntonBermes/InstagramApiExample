@@ -10,5 +10,23 @@
         android:name="com.antonbermes.instagramapiexample.ui.authorization.AuthorizationFragment"
         android:label="fragment_authorization"
         tools:layout="@layout/fragment_authorization">
+        <action
+            android:id="@+id/action_authorizationFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@+id/authorizationFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="isNewToken"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.antonbermes.instagramapiexample.ui.list.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list">
+        <argument
+            android:name="token"
+            app:argType="string" />
     </fragment>
 </navigation>
