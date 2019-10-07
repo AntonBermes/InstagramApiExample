@@ -22,6 +22,13 @@ interface InstaClient {
         @Field("grant_type") grantType: String = "authorization_code",
         @Field("redirect_uri") redirectUri: String = BuildConfig.CALLBACK_URL
     ): Deferred<AccessToken>
+
+    @GET("users/self/media/recent/")
+    fun getListOfImagesAsync(
+        @Query("access_token") token: String,
+        @Query("count") count: Int,
+        @Query("max_id") nextId: String?
+    ): Deferred<ImagesNetwork>
 }
 
 private val moshi = Moshi.Builder()
