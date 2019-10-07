@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [ImageDatabase::class], version = 1, exportSchema = false)
+@Database(entities = [ImageDatabase::class, ImageDetailsDatabase::class], version = 1, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class ImagesDatabase : RoomDatabase() {
 

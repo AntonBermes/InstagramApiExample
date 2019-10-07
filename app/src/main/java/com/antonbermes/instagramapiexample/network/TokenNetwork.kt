@@ -2,6 +2,6 @@ package com.antonbermes.instagramapiexample.network
 
 import com.squareup.moshi.Json
 
-data class AccessToken(
+data class TokenNetwork(
     @Json(name = "access_token") val accessToken: String
 )

@@ -21,14 +21,25 @@ interface InstaClient {
         @Field("client_secret") clientSecret: String = BuildConfig.CLIENT_SECRET,
         @Field("grant_type") grantType: String = "authorization_code",
         @Field("redirect_uri") redirectUri: String = BuildConfig.CALLBACK_URL
-    ): Deferred<AccessToken>
+    ): Deferred<TokenNetwork>
 
+    /**
+     * We can get all the necessary information about the image in this request.
+     * But, not all backends allow you to get all the information in one request,
+     * so for practice we will make another request.
+     */
     @GET("users/self/media/recent/")
     fun getListOfImagesAsync(
         @Query("access_token") token: String,
         @Query("count") count: Int,
         @Query("max_id") nextId: String?
     ): Deferred<ImagesNetwork>
+
+    @GET("media/{id}/")
+    fun getImageAsync(
+        @Path("id") imageId: String,
+        @Query("access_token") token: String
+    ): Deferred<ImageDetailsNetwork>
 }
 
 private val moshi = Moshi.Builder()
