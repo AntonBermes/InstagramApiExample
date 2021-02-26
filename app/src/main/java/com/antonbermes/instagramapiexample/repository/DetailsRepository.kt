@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.antonbermes.instagramapiexample.database.ImagesDao
 import com.antonbermes.instagramapiexample.domain.ImageDetails
 import com.antonbermes.instagramapiexample.network.InstaApi
-import com.antonbermes.instagramapiexample.network.asDatabaseImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

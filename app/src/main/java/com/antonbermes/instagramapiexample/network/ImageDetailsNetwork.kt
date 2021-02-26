@@ -4,31 +4,15 @@ import com.antonbermes.instagramapiexample.database.ImageDetailsDatabase
 import com.squareup.moshi.Json
 
 data class ImageDetailsNetwork(
-    val data: Data
+    var id: String,
+    @Json(name = "media_url") val image: String,
+    val caption: String?
 ) {
-    data class Data(
-        var id: String?,
-        val caption: Caption?,
-        val images: ImagesMy
-    ) {
-        data class Caption(
-            val text: String?
+    fun asDatabaseImage(): ImageDetailsDatabase {
+        return ImageDetailsDatabase(
+            imageId = id,
+            url = image,
+            description = caption ?: ""
         )
-
-        data class ImagesMy(
-            @Json(name = "standard_resolution") val standardResolution: StandardResolution
-        ) {
-            data class StandardResolution(
-                val url: String?
-            )
-        }
     }
-}
-
-fun ImageDetailsNetwork.asDatabaseImage(): ImageDetailsDatabase {
-    return ImageDetailsDatabase(
-        imageId = data.id ?: "",
-        url = data.images.standardResolution.url ?: "",
-        description = data.caption?.text ?: ""
-    )
 }

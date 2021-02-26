@@ -7,9 +7,9 @@ class Converter {
     @TypeConverter
     fun stringToType(s: String): Type {
         return when (s) {
-            "image" -> Type.IMAGE
-            "carousel" -> Type.CAROUSEL
-            "video" -> Type.VIDEO
+            "IMAGE" -> Type.IMAGE
+            "CAROUSEL_ALBUM" -> Type.CAROUSEL
+            "VIDEO" -> Type.VIDEO
             else -> Type.ERROR
         }
     }

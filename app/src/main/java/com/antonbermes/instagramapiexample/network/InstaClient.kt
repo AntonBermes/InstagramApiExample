@@ -5,11 +5,13 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Deferred
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
-private const val BASE_URL = "https://api.instagram.com/v1/"
+private const val BASE_URL = "https://graph.instagram.com/"
 
 interface InstaClient {
 
@@ -23,22 +25,31 @@ interface InstaClient {
         @Field("redirect_uri") redirectUri: String = BuildConfig.CALLBACK_URL
     ): Deferred<TokenNetwork>
 
+    @GET("access_token")
+    fun getLongLivedAccessTokenAsync(
+        @Query("access_token") token: String,
+        @Query("client_secret") clientSecret: String = BuildConfig.CLIENT_SECRET,
+        @Query("grant_type") grantType: String = "ig_exchange_token"
+    ): Deferred<TokenNetwork>
+
     /**
      * We can get all the necessary information about the image in this request.
      * But, not all backends allow you to get all the information in one request,
      * so for practice we will make another request.
      */
-    @GET("users/self/media/recent/")
+    @GET("me/media")
     fun getListOfImagesAsync(
         @Query("access_token") token: String,
-        @Query("count") count: Int,
-        @Query("max_id") nextId: String?
+        @Query("limit") count: Int,
+        @Query("after") nextId: String?,
+        @Query("fields") fields: String = "id,media_type,media_url"
     ): Deferred<ImagesNetwork>
 
-    @GET("media/{id}/")
+    @GET("{id}")
     fun getImageAsync(
         @Path("id") imageId: String,
-        @Query("access_token") token: String
+        @Query("access_token") token: String,
+        @Query("fields") fields: String = "id,media_url,caption"
     ): Deferred<ImageDetailsNetwork>
 }
 
@@ -49,6 +60,15 @@ private val moshi = Moshi.Builder()
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    .client(
+        OkHttpClient.Builder().apply {
+            if (BuildConfig.DEBUG) {
+                this.addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+            }
+        }.build()
+    )
     .baseUrl(BASE_URL)
     .build()
 

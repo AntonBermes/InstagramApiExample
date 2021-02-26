@@ -4,34 +4,31 @@ import com.antonbermes.instagramapiexample.database.ImageDatabase
 import com.squareup.moshi.Json
 
 data class ImagesNetwork(
-    val pagination: NextMaxId,
+    val paging: Paging?,
     val data: List<Data>
 ) {
-    data class NextMaxId(
-        @Json(name = "next_max_id") var nextId: String? = null
-    )
+    data class Paging(
+        val cursors: Cursor
+    ) {
+        data class Cursor(
+            val before: String,
+            val after: String
+        )
+    }
 
     data class Data(
-        var id: String?,
-        val images: ImagesMy,
-        val type: String?
-    ) {
-        data class ImagesMy(
-            @Json(name = "thumbnail") val thumbnail: Thumbnail
-        ) {
-            data class Thumbnail(
-                val url: String?
-            )
-        }
-    }
+        var id: String,
+        @Json(name = "media_url") val image: String,
+        @Json(name = "media_type") val type: String
+    )
 }
 
 fun ImagesNetwork.asDatabaseData(): List<ImageDatabase> {
     return data.map {
         ImageDatabase(
-            imageId = it.id ?: "",
-            url = it.images.thumbnail.url ?: "",
-            type = it.type ?: ""
+            imageId = it.id,
+            url = it.image,
+            type = it.type
         )
     }
 }

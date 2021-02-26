@@ -6,7 +6,7 @@ NOTE: This application is intended for Educational Purposes. Copyright and trade
 
 ## Setup
 
-Register your application [here](https://www.instagram.com/developer/). Create a file `keys.properties` in your root directory:
+Follow [the instructions](https://developers.facebook.com/docs/instagram-basic-display-api/getting-started) to register your application. Create a file `keys.properties` in your root directory:
 ```
 CLIENT_ID = "REPLACE_HERE"
 CLIENT_SECRET = "REPLACE_HERE"

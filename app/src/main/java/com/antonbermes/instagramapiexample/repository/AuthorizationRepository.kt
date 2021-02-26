@@ -43,8 +43,10 @@ class AuthorizationRepository(
             val getAccessTokenDeferred = InstaApi.RETROFIT_SERVICE.getAccessTokenAsync(code)
             try {
                 val token = getAccessTokenDeferred.await().accessToken
-                sharedPreferences.saveToken(token)
-                _data.value = token
+                val longLivedToken = InstaApi.RETROFIT_SERVICE.getLongLivedAccessTokenAsync(token)
+                    .await().accessToken
+                sharedPreferences.saveToken(longLivedToken)
+                _data.value = longLivedToken
             } catch (e: Exception) {
                 _status.value = Status.Error(e.toString())
             }
@@ -55,7 +57,7 @@ class AuthorizationRepository(
     fun checkUrl(url: String): Boolean {
         if (isRequestToken) return true
         if (url.startsWith(BuildConfig.CALLBACK_URL)) {
-            val code = Uri.parse(url).getQueryParameter(QUERY_PARAMETER)
+            val code = Uri.parse(url).getQueryParameter(QUERY_PARAMETER)?.removeSuffix("#_")
             if (code != null) getToken(code)
         }
         return false

@@ -13,7 +13,6 @@ import com.antonbermes.instagramapiexample.domain.Type
 import com.antonbermes.instagramapiexample.repository.Status
 import com.antonbermes.instagramapiexample.ui.MyFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : MyFragment() {
 
@@ -65,7 +64,7 @@ class ListFragment : MyFragment() {
                 if (it.type == Type.IMAGE) {
                     navigate(it.imageId, token)
                     viewModel.navigated()
-                } else Snackbar.make(coordinatorLayout, getString(R.string.not_supported), Snackbar.LENGTH_LONG).show()
+                } else Snackbar.make(binding.coordinatorLayout, getString(R.string.not_supported), Snackbar.LENGTH_LONG).show()
             }
         })
         setHasOptionsMenu(true)

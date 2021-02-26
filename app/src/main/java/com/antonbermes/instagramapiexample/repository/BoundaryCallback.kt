@@ -20,7 +20,7 @@ class BoundaryCallback(
 ) : PagedList.BoundaryCallback<Image>() {
 
     companion object {
-        private const val NETWORK_PAGE_SIZE = 20
+        private const val NETWORK_PAGE_SIZE = 5
     }
 
     private val _status = MutableLiveData<Status>()
@@ -52,7 +52,7 @@ class BoundaryCallback(
             try {
                 val images = getNetworkData()
                 updateDB(images)
-                nextId = images.pagination.nextId
+                nextId = images.paging?.cursors?.after
                 _status.value = Status.StopLoading
                 isInitialized = true
             } catch (e: Exception) {

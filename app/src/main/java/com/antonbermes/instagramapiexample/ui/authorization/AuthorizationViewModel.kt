@@ -25,7 +25,7 @@ class AuthorizationViewModel(application: Application, newToken: Boolean) :
     companion object {
         private const val START_URL =
             "https://api.instagram.com/oauth/authorize/?client_id=${BuildConfig.CLIENT_ID}" +
-                    "&redirect_uri=${BuildConfig.CALLBACK_URL}&response_type=code"
+                    "&redirect_uri=${BuildConfig.CALLBACK_URL}&scope=user_profile,user_media&response_type=code"
     }
 
     var currentUrl = START_URL
